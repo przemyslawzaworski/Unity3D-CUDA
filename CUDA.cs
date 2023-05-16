@@ -64,6 +64,7 @@ public class CUDA : MonoBehaviour
 		cuMemcpyDtoH(_Host, _Device, (uint)_Memory);
 		_Texture.LoadRawTextureData(_Host, _Memory);
 		_Texture.Apply();
+		_GCHandles[1].Free();
 	}
 
 	void OnGUI()
@@ -73,7 +74,7 @@ public class CUDA : MonoBehaviour
 
 	void OnDestroy()
 	{
-		for (int i = 0; i < _GCHandles.Length; i++) _GCHandles[i].Free();
+		_GCHandles[0].Free();
 		cuMemFree(_Device);
 		Marshal.FreeHGlobal(_Host);
 		Destroy(_Texture);
